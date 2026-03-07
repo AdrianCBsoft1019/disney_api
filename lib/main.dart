@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'widgets/navbar.dart';
 import 'views/series_page.dart';
 import 'views/suscription_page.dart';
+import 'views/character_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,49 +31,34 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String _currentPage = 'Home';
 
-  void _onSearchTap() {
-    // Implement search
-  }
+  void _onSearchTap() {}
 
   void _onNavItemTap(String item) {
-    setState(() {
-      _currentPage = item;
-    });
+    setState(() => _currentPage = item);
   }
 
   void _onSubscribeTap() {
-    setState(() {
-      _currentPage = 'Suscribirse';
-    });
+    setState(() => _currentPage = 'Suscribirse');
   }
 
   Widget _buildBody() {
     switch (_currentPage) {
       case 'Series':
         return const SeriesPage();
+      case 'Personajes':
+        return const CharacterPage();
       case 'Suscribirse':
         return const SuscripcionPage();
       case 'Películas':
         return const Center(
-          child: Text(
-            'Películas - Próximamente',
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
-        );
-      case 'Personajes':
-        return const Center(
-          child: Text(
-            'Personajes - Próximamente',
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
+          child: Text('Películas - Próximamente',
+              style: TextStyle(color: Colors.white, fontSize: 20)),
         );
       case 'Home':
       default:
         return const Center(
-          child: Text(
-            'Welcome to Disney API',
-            style: TextStyle(color: Colors.white, fontSize: 20),
-          ),
+          child: Text('Welcome to Disney API',
+              style: TextStyle(color: Colors.white, fontSize: 20)),
         );
     }
   }

@@ -3,7 +3,7 @@ class DisneyContent {
   final String title;
   final String year;
   final String poster;
-  final String backdrop; // <--- Nueva propiedad para el fondo
+  final String backdrop;
   final String type;
   final String description;
   final List<String> genres;
@@ -15,7 +15,7 @@ class DisneyContent {
     required this.title,
     required this.year,
     required this.poster,
-    required this.backdrop, // <--- Requerido
+    required this.backdrop,
     required this.type,
     required this.description,
     required this.genres,
@@ -78,8 +78,12 @@ class DisneyCharacter {
   final String id;
   final String name;
   final String imageUrl;
-  final String description; // Opcional, para el Hero
-  final String movieTitle; // Película a la que pertenece
+  final String description;
+  final String movieTitle;
+  final List<String> allies;
+  final List<String> enemies;
+  final List<String> films;
+  final List<String> tvShows;
 
   DisneyCharacter({
     required this.id,
@@ -87,6 +91,10 @@ class DisneyCharacter {
     required this.imageUrl,
     required this.movieTitle,
     this.description = '',
+    this.allies = const [],
+    this.enemies = const [],
+    this.films = const [],
+    this.tvShows = const [],
   });
 
   factory DisneyCharacter.fromJson(Map<String, dynamic> json) {
@@ -96,6 +104,10 @@ class DisneyCharacter {
       imageUrl: json['imageUrl'] ?? '',
       movieTitle: json['movieTitle'] ?? '',
       description: json['description'] ?? '',
+      allies: List<String>.from(json['allies'] ?? []),
+      enemies: List<String>.from(json['enemies'] ?? []),
+      films: List<String>.from(json['films'] ?? []),
+      tvShows: List<String>.from(json['tvShows'] ?? []),
     );
   }
 
@@ -106,6 +118,10 @@ class DisneyCharacter {
       'imageUrl': imageUrl,
       'movieTitle': movieTitle,
       'description': description,
+      'allies': allies,
+      'enemies': enemies,
+      'films': films,
+      'tvShows': tvShows,
     };
   }
 }
