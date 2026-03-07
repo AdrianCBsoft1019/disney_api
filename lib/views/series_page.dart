@@ -25,15 +25,14 @@ class Series {
   });
 }
 
-// ── Local data (real Disney+ series) ──────────────────────────────────────────
 const List<Series> disneySeriesList = [
   Series(
     id: 1,
     title: 'The Mandalorian',
     imageUrl:
-        'https://upload.wikimedia.org/wikipedia/en/6/67/The_Mandalorian_-_Season_1_poster.jpg',
+        'https://m.media-amazon.com/images/M/MV5BNjgxZGM0OWUtZGY1MS00MWRmLTk2N2ItYjQyZTI1OThlZDliXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
     description:
-        'After the fall of the Empire, a lone gunfighter makes his way through the outer reaches of the lawless galaxy. Set in the Star Wars universe, this series follows a mysterious bounty hunter protecting a sought-after foundling.',
+        'Tras la caída del Imperio, un solitario pistolero recorre los confines más remotos de la galaxia sin ley. Ambientada en el universo de Star Wars, la serie sigue a un misterioso cazarrecompensas que debe proteger a un valioso pupilo de quienes lo persiguen.',
     year: '2019',
     seasons: '3 Temporadas',
     genre: 'Acción / Sci-Fi',
@@ -49,9 +48,9 @@ const List<Series> disneySeriesList = [
     id: 2,
     title: 'WandaVision',
     imageUrl:
-        'https://upload.wikimedia.org/wikipedia/en/8/80/WandaVision_cover_art.jpg',
+        'https://m.media-amazon.com/images/M/MV5BZTMxMmM1ODItMTZiMS00NjI1LWEwODctMjQ4ZjY4ODliNDI0XkEyXkFqcGc@._V1_QL75_UX190_CR0,2,190,281_.jpg',
     description:
-        'Wanda Maximoff and Vision — two super-powered beings living idealized suburban lives — begin to suspect that everything is not as it seems. A blend of classic sitcom tropes and the Marvel Cinematic Universe.',
+        'Wanda Maximoff y Visión, dos seres con superpoderes que viven una vida suburbana aparentemente perfecta, comienzan a sospechar que nada es lo que parece. Una mezcla única de comedia de situación clásica con el universo cinematográfico de Marvel.',
     year: '2021',
     seasons: '1 Temporada',
     genre: 'Drama / Fantasía',
@@ -62,9 +61,9 @@ const List<Series> disneySeriesList = [
     id: 3,
     title: 'Loki',
     imageUrl:
-        'https://upload.wikimedia.org/wikipedia/en/e/e7/Loki_TV_series_poster.jpg',
+        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSP1EsBRT-TQ7BTfzbn0EXJ9MGz6V5nC5W-Hw&s',
     description:
-        'The mercurial villain Loki resumes his role as the God of Mischief in a new series that takes place after the events of Avengers: Endgame, working with the Time Variance Authority.',
+        'El escurridizo villano Loki retoma su papel como Dios de las Travesuras en una nueva aventura que transcurre tras los eventos de Avengers: Endgame. Obligado a colaborar con la Autoridad de Variación Temporal, deberá enfrentar versiones alternativas de sí mismo.',
     year: '2021',
     seasons: '2 Temporadas',
     genre: 'Aventura / Sci-Fi',
@@ -80,9 +79,9 @@ const List<Series> disneySeriesList = [
     id: 4,
     title: 'Andor',
     imageUrl:
-        'https://upload.wikimedia.org/wikipedia/en/3/3d/Andor_TV_series_poster.jpg',
+        'https://m.media-amazon.com/images/M/MV5BNGI2MTJjMjUtMTJhOC00YTY2LTg1NjUtMTdmMjg4YTk2YjM5XkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
     description:
-        'A prequel to Rogue One, this gritty spy thriller follows Cassian Andor\'s journey to becoming a Rebel spy. An exploration of how ordinary people are radicalized against an oppressive regime.',
+        'Es un thriller de espionaje y drama político que muestra cómo nació la Rebelión desde las sombras.',
     year: '2022',
     seasons: '2 Temporadas',
     genre: 'Drama / Spy-Fi',
@@ -98,9 +97,9 @@ const List<Series> disneySeriesList = [
     id: 5,
     title: 'The Bear',
     imageUrl:
-        'https://upload.wikimedia.org/wikipedia/en/d/d8/The_Bear_TV_poster.jpg',
+        'https://m.media-amazon.com/images/M/MV5BYjA2MzUyY2EtMTBmZC00MmNmLWFkNTMtMjlhY2M2ZTMzNzY0XkEyXkFqcGc@._V1_.jpg',
     description:
-        'A young chef from the fine dining world comes home to Chicago to run his family\'s sandwich shop after a family tragedy. An intense, fast-paced drama about family, grief, and culinary ambition.',
+        'La serie sigue su lucha por transformar un negocio caótico y endeudado, mientras lidia con un personal resistente al cambio y su propio duelo',
     year: '2022',
     seasons: '3 Temporadas',
     genre: 'Drama / Comedia',
@@ -116,9 +115,9 @@ const List<Series> disneySeriesList = [
     id: 6,
     title: 'Hawkeye',
     imageUrl:
-        'https://upload.wikimedia.org/wikipedia/en/9/98/Hawkeye_poster.jpg',
+        'https://m.media-amazon.com/images/M/MV5BOGU5ZDBlOTAtOTZmYS00MWE0LTg0NzktNDcxZGJhN2FhZmM2XkEyXkFqcGc@._V1_.jpg',
     description:
-        'Set after the events of Avengers: Endgame, Clint Barton must partner with a young archer Kate Bishop to confront enemies from his past before he can return home for Christmas.',
+        'Tras los eventos de Avengers: Endgame, Clint Barton debe asociarse con la joven arquera Kate Bishop para enfrentar enemigos de su pasado. Todo esto mientras intenta llegar a casa a tiempo para pasar la Navidad con su familia.',
     year: '2021',
     seasons: '1 Temporada',
     genre: 'Acción / Comedia',
@@ -134,9 +133,9 @@ const List<Series> disneySeriesList = [
     id: 7,
     title: 'Secret Invasion',
     imageUrl:
-        'https://upload.wikimedia.org/wikipedia/en/9/91/Secret_Invasion_poster.jpg',
+        'https://m.media-amazon.com/images/M/MV5BNmYzYzA2NzMtOTVmMC00ZDY4LThlMDctZmUyN2NlMjQ2ODViXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
     description:
-        'Nick Fury and Talos discover that a faction of shape-shifting Skrulls have been infiltrating Earth for years, hiding in plain sight at the highest levels of governments and societies.',
+        'Nick Fury y Talos descubren que una facción de Skrulls cambia-formas ha estado infiltrándose en la Tierra durante años, ocultándose a plena vista en los niveles más altos de los gobiernos y las sociedades del mundo.',
     year: '2023',
     seasons: '1 Temporada',
     genre: 'Thriller / Sci-Fi',
@@ -152,9 +151,9 @@ const List<Series> disneySeriesList = [
     id: 8,
     title: 'The Acolyte',
     imageUrl:
-        'https://upload.wikimedia.org/wikipedia/en/2/27/The_Acolyte_poster.jpg',
+        'https://m.media-amazon.com/images/M/MV5BYzkxYjcxOWUtNWM5Zi00MzY3LTliYjAtNGYyNjE5OWY2MmU4XkEyXkFqcGc@._V1_.jpg',
     description:
-        'Set during the final days of the High Republic era, a mystery-thriller that investigates a series of shocking crimes set during the waning days of the Republic\'s golden age.',
+        'la adición más reciente al universo de Star Wars y ha generado mucha conversación por explorar una época que nunca habíamos visto en acción real',
     year: '2024',
     seasons: '1 Temporada',
     genre: 'Misterio / Sci-Fi',
@@ -165,9 +164,9 @@ const List<Series> disneySeriesList = [
     id: 9,
     title: 'Moon Knight',
     imageUrl:
-        'https://upload.wikimedia.org/wikipedia/en/d/d1/Moon_Knight_poster.jpg',
+        'https://m.media-amazon.com/images/M/MV5BNDAzNmYwZjgtNDc3YS00ZDMyLTk0MjktMTg4MGNmNGU3MjlhXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg',
     description:
-        'A mercenary with dissociative identity disorder is drawn into a deadly mystery involving Egyptian gods while his alter ego, a meek museum gift shop employee, also fights for survival.',
+        'Un mercenario con trastorno de identidad disociativa se ve envuelto en un misterio mortal relacionado con los dioses egipcios. Mientras tanto, su alter ego, un tímido empleado de tienda de museo, también lucha por sobrevivir.',
     year: '2022',
     seasons: '1 Temporada',
     genre: 'Acción / Drama',
@@ -178,9 +177,9 @@ const List<Series> disneySeriesList = [
     id: 10,
     title: 'Obi-Wan Kenobi',
     imageUrl:
-        'https://upload.wikimedia.org/wikipedia/en/3/35/Obi-Wan_Kenobi_poster.jpg',
+        'https://m.media-amazon.com/images/M/MV5BOGU4ODlmNmMtMDM0OS00NTMxLWFlODUtZGFkMjU5NDdhMjgyXkEyXkFqcGc@._V1_.jpg',
     description:
-        'Ten years after the dramatic events of Revenge of the Sith, Obi-Wan Kenobi faces his greatest defeat — the corruption and the fall of his best friend Anakin Skywalker turned Sith Lord Darth Vader.',
+        'Diez años después de los dramáticos eventos de La Venganza de los Sith, Obi-Wan Kenobi enfrenta su mayor derrota: la corrupción y caída de su mejor amigo Anakin Skywalker, convertido en el Señor Sith Darth Vader.',
     year: '2022',
     seasons: '1 Temporada',
     genre: 'Acción / Aventura',
@@ -194,7 +193,6 @@ const List<Series> disneySeriesList = [
   ),
 ];
 
-// ── Series Page ────────────────────────────────────────────────────────────────
 class SeriesPage extends StatefulWidget {
   const SeriesPage({super.key});
 
