@@ -22,9 +22,6 @@ class CharactersPage extends StatelessWidget {
         // <-- Habilitamos scroll para toda la página
         child: Column(
           children: [
-            // ============================================================
-            // 1. HERO DE PROMOCIONES (Inspirado en Imagen 1/3)
-            // ============================================================
             Container(
               height: 500, // Altura similar a tu carrusel
               width: double.infinity,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widgets/navbar.dart';
 import 'views/series_page.dart';
+import 'views/suscription_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,13 +41,17 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onSubscribeTap() {
-    // Implement subscribe
+    setState(() {
+      _currentPage = 'Suscribirse';
+    });
   }
 
   Widget _buildBody() {
     switch (_currentPage) {
       case 'Series':
         return const SeriesPage();
+      case 'Suscribirse':
+        return const SuscripcionPage();
       case 'Películas':
         return const Center(
           child: Text(
