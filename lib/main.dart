@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'widgets/navbar.dart';
 import 'constants/colors.dart';
+import 'models/movie_model.dart';
 
 void main() {
   runApp(const MyApp());
