@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/movie_model.dart';
 import '../services/api_service.dart';
+import '../widgets/footer.dart';
 
 class CharacterPage extends StatefulWidget {
   const CharacterPage({super.key});
@@ -351,6 +352,7 @@ class _CharacterPageState extends State<CharacterPage> {
             ),
 
           const SliverToBoxAdapter(child: SizedBox(height: 16)),
+          const SliverToBoxAdapter(child: Footer()),
         ],
       ),
     );
@@ -672,7 +674,7 @@ class _CharacterDetailDialog extends StatelessWidget {
                               const SizedBox(height: 16),
                             ],
                             if (character.allies.isNotEmpty) ...[
-                              _SectionTitle('🤝 Aliados'),
+                              _SectionTitle(' Aliados'),
                               const SizedBox(height: 8),
                               Wrap(
                                 spacing: 6, runSpacing: 6,

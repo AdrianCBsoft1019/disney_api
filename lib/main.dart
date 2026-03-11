@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'widgets/navbar.dart';
-import 'widgets/footer.dart';
 import 'views/home_view.dart';
 import 'views/series_page.dart';
 import 'views/movies_page.dart';
@@ -59,20 +58,14 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Column(
         children: [
-          // Navbar: estático arriba
           Navbar(
             onSearchTap: _onSearchTap,
             onNavItemTap: _onNavItemTap,
             onSubscribeTap: _onSubscribeTap,
           ),
-
-          // Contenido: ocupa todo el espacio y cada vista maneja su propio scroll
           Expanded(
             child: _buildBody(),
           ),
-
-          // Footer: estático abajo
-          const Footer(),
         ],
       ),
     );

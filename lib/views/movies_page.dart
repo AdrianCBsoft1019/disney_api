@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'movie_detail_page.dart';
+import '../widgets/footer.dart';
 
 // ── Movie model ────────────────────────────────────────────────────────────────
 class _Movie {
@@ -59,7 +60,7 @@ const _movies = [
     id: '4', title: 'Avatar: El Sentido del Agua', year: '2022',
     imageUrl: 'https://http2.mlstatic.com/D_NQ_NP_820377-MLU70799697688_082023-O.webp',
     backdrop: 'https://media.gqmagazine.fr/photos/63dce1f582e384fe4d7ac7ef/master/pass/raw.jpeg',
-    description: 'Jake Sully y Ney\'tiri han formado una familia en Pandora. Cuando una amenaza familiar regresa, Jake debe pelear una guerra difícil.',
+    description: "Jake Sully y Ney'tiri han formado una familia en Pandora. Cuando una amenaza familiar regresa, Jake debe pelear una guerra difícil.",
     genres: ['Acción', 'Aventura', 'Ciencia Ficción'], rating: 7.6, director: 'James Cameron',
   ),
   _Movie(
@@ -135,6 +136,7 @@ class _MoviesPageState extends State<MoviesPage> {
       color: const Color(0xFF0D0D1A),
       child: CustomScrollView(
         slivers: [
+          // ── Header + buscador ──────────────────────────────────────────
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(32, 32, 32, 0),
@@ -143,14 +145,24 @@ class _MoviesPageState extends State<MoviesPage> {
                 children: [
                   Row(
                     children: [
-                      Container(width: 4, height: 32,
-                          decoration: BoxDecoration(color: const Color(0xFF1E90FF), borderRadius: BorderRadius.circular(2))),
+                      Container(
+                        width: 4, height: 32,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1E90FF),
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
                       const SizedBox(width: 12),
-                      const Text('Películas',
-                          style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w700, letterSpacing: 0.5)),
+                      const Text(
+                        'Películas',
+                        style: TextStyle(color: Colors.white, fontSize: 28,
+                            fontWeight: FontWeight.w700, letterSpacing: 0.5),
+                      ),
                       const Spacer(),
-                      Text('${_filtered.length} títulos',
-                          style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 14)),
+                      Text(
+                        '${_filtered.length} títulos',
+                        style: TextStyle(color: Colors.white.withOpacity(0.4), fontSize: 14),
+                      ),
                     ],
                   ),
                   const SizedBox(height: 24),
@@ -179,6 +191,7 @@ class _MoviesPageState extends State<MoviesPage> {
             ),
           ),
 
+          // ── Grid ──────────────────────────────────────────────────────
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
             sliver: SliverGrid(
@@ -202,6 +215,7 @@ class _MoviesPageState extends State<MoviesPage> {
           ),
 
           const SliverToBoxAdapter(child: SizedBox(height: 48)),
+          const SliverToBoxAdapter(child: Footer()),
         ],
       ),
     );
@@ -236,7 +250,8 @@ class _MovieCardState extends State<_MovieCard> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             boxShadow: _hovered
-                ? [BoxShadow(color: const Color(0xFF1E90FF).withOpacity(0.4), blurRadius: 20, offset: const Offset(0, 8))]
+                ? [BoxShadow(color: const Color(0xFF1E90FF).withOpacity(0.4),
+                    blurRadius: 20, offset: const Offset(0, 8))]
                 : [],
           ),
           child: ClipRRect(
@@ -244,11 +259,14 @@ class _MovieCardState extends State<_MovieCard> {
             child: Stack(
               children: [
                 Positioned.fill(
-                  child: Image.network(widget.movie.imageUrl, fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => Container(
-                        color: const Color(0xFF1A1A2E),
-                        child: Center(child: Icon(Icons.movie_rounded, color: Colors.white.withOpacity(0.3), size: 40)),
-                      )),
+                  child: Image.network(
+                    widget.movie.imageUrl, fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Container(
+                      color: const Color(0xFF1A1A2E),
+                      child: Center(child: Icon(Icons.movie_rounded,
+                          color: Colors.white.withOpacity(0.3), size: 40)),
+                    ),
+                  ),
                 ),
                 Positioned.fill(
                   child: AnimatedOpacity(
@@ -269,14 +287,17 @@ class _MovieCardState extends State<_MovieCard> {
                   top: 8, right: 8,
                   child: Container(
                     padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                    decoration: BoxDecoration(color: Colors.black.withOpacity(0.7), borderRadius: BorderRadius.circular(4)),
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(4)),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Icon(Icons.star_rounded, color: Color(0xFFFFC107), size: 11),
                         const SizedBox(width: 3),
                         Text(widget.movie.rating.toString(),
-                            style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w600)),
+                            style: const TextStyle(color: Colors.white, fontSize: 10,
+                                fontWeight: FontWeight.w600)),
                       ],
                     ),
                   ),
@@ -292,17 +313,23 @@ class _MovieCardState extends State<_MovieCard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(widget.movie.title, maxLines: 2, overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w700)),
+                          Text(widget.movie.title, maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(color: Colors.white, fontSize: 12,
+                                  fontWeight: FontWeight.w700)),
                           const SizedBox(height: 4),
                           Text('${widget.movie.year} · ${widget.movie.director}',
-                              style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 10)),
+                              style: TextStyle(color: Colors.white.withOpacity(0.7),
+                                  fontSize: 10)),
                           const SizedBox(height: 8),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                            decoration: BoxDecoration(color: const Color(0xFF1E90FF), borderRadius: BorderRadius.circular(4)),
+                            decoration: BoxDecoration(
+                                color: const Color(0xFF1E90FF),
+                                borderRadius: BorderRadius.circular(4)),
                             child: const Text('Ver detalles',
-                                style: TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w600)),
+                                style: TextStyle(color: Colors.white, fontSize: 11,
+                                    fontWeight: FontWeight.w600)),
                           ),
                         ],
                       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../views/movie_detail_page.dart';
 
 class _Release {
   final String title;
@@ -7,28 +8,31 @@ class _Release {
   final String imageUrl;
   final double rating;
 
+  final String backdrop;
+  final String description;
+  final String director;
+
   const _Release({
     required this.title,
     required this.year,
     required this.tag,
     required this.imageUrl,
     required this.rating,
+    required this.backdrop,
+    required this.description,
+    required this.director,
   });
 }
 
 const _releases = [
   _Release(
-    title: 'Avatar: El Sentido del Agua',
-    year: '2022',
-    tag: 'PELÍCULA • SCI-FI',
-    imageUrl: 'https://media.gqmagazine.fr/photos/63dce1f582e384fe4d7ac7ef/master/pass/raw.jpeg',
-    rating: 7.6,
-  ),
-  _Release(
     title: 'Shogun',
     year: '2024',
     tag: 'SERIE • DRAMA',
     imageUrl: 'https://hips.hearstapps.com/hmg-prod/images/shogun-105-04461r-65f89ad62c488.jpg',
+    backdrop: 'https://hips.hearstapps.com/hmg-prod/images/shogun-105-04461r-65f89ad62c488.jpg',
+    description: 'En el Japón de 1600, Lord Toranaga lucha por su vida contra sus poderosos enemigos del Consejo de Regentes.',
+    director: 'Rachel Kondo',
     rating: 8.8,
   ),
   _Release(
@@ -36,6 +40,9 @@ const _releases = [
     year: '2024',
     tag: 'PELÍCULA • ACCIÓN',
     imageUrl: 'https://lumiere-a.akamaihd.net/v1/images/mobile_89eef737.jpeg?region=0,0,1239,1001',
+    backdrop: 'https://lumiere-a.akamaihd.net/v1/images/mobile_89eef737.jpeg?region=0,0,1239,1001',
+    description: 'Una misión que cambiará la historia del Universo Cinematográfico de Marvel para siempre.',
+    director: 'Shawn Levy',
     rating: 8.1,
   ),
   _Release(
@@ -43,6 +50,9 @@ const _releases = [
     year: '2024',
     tag: 'PELÍCULA • ANIMACIÓN',
     imageUrl: 'https://ichef.bbci.co.uk/images/ic/480xn/p04j6nxk.jpg.webp',
+    backdrop: 'https://ichef.bbci.co.uk/images/ic/480xn/p04j6nxk.jpg.webp',
+    description: 'Moana recibe un inesperado aviso de sus ancestros y se embarca en una nueva e increíble aventura.',
+    director: 'David G. Derrick Jr.',
     rating: 8.3,
   ),
   _Release(
@@ -50,6 +60,9 @@ const _releases = [
     year: '2024',
     tag: 'SERIE • SCI-FI',
     imageUrl: 'https://m.media-amazon.com/images/M/MV5BYzkxYjcxOWUtNWM5Zi00MzY3LTliYjAtNGYyNjE5OWY2MmU4XkEyXkFqcGc@._V1_.jpg',
+    backdrop: 'https://m.media-amazon.com/images/M/MV5BYzkxYjcxOWUtNWM5Zi00MzY3LTliYjAtNGYyNjE5OWY2MmU4XkEyXkFqcGc@._V1_.jpg',
+    description: 'Una investigadora Jedi y un peligroso asesino se enfrentan en el universo de Star Wars durante el apogeo de la República.',
+    director: 'Leslye Headland',
     rating: 6.5,
   ),
   _Release(
@@ -57,6 +70,9 @@ const _releases = [
     year: '2023',
     tag: 'SERIE • AVENTURA',
     imageUrl: 'https://es.web.img2.acsta.net/pictures/23/09/19/11/27/3320024.jpg',
+    backdrop: 'https://es.web.img2.acsta.net/pictures/23/09/19/11/27/3320024.jpg',
+    description: 'La ex Jedi Ahsoka Tano investiga una amenaza emergente para la galaxia después de la caída del Imperio Galáctico.',
+    director: 'Dave Filoni',
     rating: 7.8,
   ),
 ];
@@ -149,7 +165,27 @@ class _CarouselSectionState extends State<CarouselSection> {
                   controller: _controller,
                   itemCount: _releases.length,
                   onPageChanged: (i) => setState(() => _current = i),
-                  itemBuilder: (_, i) => _ReleaseSlide(release: _releases[i]),
+                  itemBuilder: (_, i) => _ReleaseSlide(
+                    release: _releases[i],
+                    onVerAhora: () {
+                      final r = _releases[i];
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (_) => MovieDetailPage(
+                          movie: MovieDetailData(
+                            id: i.toString(),
+                            title: r.title,
+                            year: r.year,
+                            imageUrl: r.imageUrl,
+                            backdrop: r.backdrop,
+                            description: r.description,
+                            genres: [r.tag],
+                            rating: r.rating,
+                            director: r.director,
+                          ),
+                        ),
+                      ));
+                    },
+                  ),
                 ),
 
                 // Left arrow
@@ -219,7 +255,8 @@ class _CarouselSectionState extends State<CarouselSection> {
 // ── Release Slide ──────────────────────────────────────────────────────────────
 class _ReleaseSlide extends StatelessWidget {
   final _Release release;
-  const _ReleaseSlide({required this.release});
+  final VoidCallback onVerAhora;
+  const _ReleaseSlide({required this.release, required this.onVerAhora});
 
   @override
   Widget build(BuildContext context) {
@@ -306,7 +343,7 @@ class _ReleaseSlide extends StatelessWidget {
               const SizedBox(height: 24),
               // "Ver ahora" button
               GestureDetector(
-                onTap: () {}, // sin función por ahora
+                onTap: onVerAhora,
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                       horizontal: 32, vertical: 14),

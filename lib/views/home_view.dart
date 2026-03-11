@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import '../widgets/carousel_section.dart';
+import '../widgets/footer.dart';
 
 class _FeaturedItem {
   final String title;
@@ -165,6 +166,7 @@ class _HomeViewState extends State<HomeView> {
             const CarouselSection(),
 
             const SizedBox(height: 24),
+            const Footer(),
           ],
         ),
       ),
