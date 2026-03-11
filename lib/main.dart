@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'widgets/navbar.dart';
+import 'widgets/footer.dart';
 import 'views/series_page.dart';
 import 'views/suscription_page.dart';
 import 'views/character_page.dart';
@@ -68,12 +69,20 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Column(
         children: [
+          // Navbar: siempre arriba, estático
           Navbar(
             onSearchTap: _onSearchTap,
             onNavItemTap: _onNavItemTap,
             onSubscribeTap: _onSubscribeTap,
           ),
-          Expanded(child: _buildBody()),
+
+          // Contenido scrolleable en el medio
+          Expanded(
+            child: _buildBody(),
+          ),
+
+          // Footer: siempre abajo, estático
+          const Footer(),
         ],
       ),
     );
