@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'movie_detail_page.dart';
 
-// ── Movie model (local, no depende de DisneyContent) ──────────────────────────
+// ── Movie model ────────────────────────────────────────────────────────────────
 class _Movie {
   final String id;
   final String title;
@@ -23,6 +24,13 @@ class _Movie {
     required this.rating,
     required this.director,
   });
+
+  MovieDetailData toDetailData() => MovieDetailData(
+        id: id, title: title, year: year,
+        imageUrl: imageUrl, backdrop: backdrop,
+        description: description, genres: genres,
+        rating: rating, director: director,
+      );
 }
 
 const _movies = [
@@ -51,7 +59,7 @@ const _movies = [
     id: '4', title: 'Avatar: El Sentido del Agua', year: '2022',
     imageUrl: 'https://http2.mlstatic.com/D_NQ_NP_820377-MLU70799697688_082023-O.webp',
     backdrop: 'https://media.gqmagazine.fr/photos/63dce1f582e384fe4d7ac7ef/master/pass/raw.jpeg',
-    description: 'Jake Sully y Ney\'tiri han formado una familia en Pandora. Cuando una amenaza familiar regresa, Jake debe pelear una guerra difícil contra los humanos.',
+    description: 'Jake Sully y Ney\'tiri han formado una familia en Pandora. Cuando una amenaza familiar regresa, Jake debe pelear una guerra difícil.',
     genres: ['Acción', 'Aventura', 'Ciencia Ficción'], rating: 7.6, director: 'James Cameron',
   ),
   _Movie(
@@ -65,7 +73,7 @@ const _movies = [
     id: '6', title: 'Elementos', year: '2023',
     imageUrl: 'https://purodiseno.lat/wp-content/uploads/2023/09/ELEMENTOS-POSTER-.jpg',
     backdrop: 'https://cadenaser.com/resizer/v2/6DOR626ASZGEDLHFVDOTP2EJT4.jpg?auth=fe54a80cc9512727e7d748ecf2217b5192cd875aef342b1b24f0b1ad4d902932',
-    description: 'En una ciudad donde los cuatro elementos conviven, Fuego y Agua descubren algo que nunca imaginaron: ¡tienen mucho en común!',
+    description: 'En una ciudad donde los cuatro elementos conviven, Fuego y Agua descubren algo que nunca imaginaron.',
     genres: ['Animación', 'Familia', 'Comedia'], rating: 7.7, director: 'Peter Sohn',
   ),
   _Movie(
@@ -113,13 +121,20 @@ class _MoviesPageState extends State<MoviesPage> {
       .where((m) => m.title.toLowerCase().contains(_filter.toLowerCase()))
       .toList();
 
+  void _openDetail(BuildContext context, _Movie movie) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => MovieDetailPage(movie: movie.toDetailData()),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       color: const Color(0xFF0D0D1A),
       child: CustomScrollView(
         slivers: [
-          // Header
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.fromLTRB(32, 32, 32, 0),
@@ -128,13 +143,8 @@ class _MoviesPageState extends State<MoviesPage> {
                 children: [
                   Row(
                     children: [
-                      Container(
-                        width: 4, height: 32,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF1E90FF),
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
+                      Container(width: 4, height: 32,
+                          decoration: BoxDecoration(color: const Color(0xFF1E90FF), borderRadius: BorderRadius.circular(2))),
                       const SizedBox(width: 12),
                       const Text('Películas',
                           style: TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w700, letterSpacing: 0.5)),
@@ -144,7 +154,6 @@ class _MoviesPageState extends State<MoviesPage> {
                     ],
                   ),
                   const SizedBox(height: 24),
-                  // Search bar
                   Container(
                     height: 44,
                     decoration: BoxDecoration(
@@ -170,7 +179,6 @@ class _MoviesPageState extends State<MoviesPage> {
             ),
           ),
 
-          // Grid
           SliverPadding(
             padding: const EdgeInsets.symmetric(horizontal: 32),
             sliver: SliverGrid(
@@ -185,7 +193,7 @@ class _MoviesPageState extends State<MoviesPage> {
                   final movie = _filtered[index];
                   return _MovieCard(
                     movie: movie,
-                    onTap: () => _showDetail(context, movie),
+                    onTap: () => _openDetail(context, movie),
                   );
                 },
                 childCount: _filtered.length,
@@ -198,21 +206,12 @@ class _MoviesPageState extends State<MoviesPage> {
       ),
     );
   }
-
-  void _showDetail(BuildContext context, _Movie movie) {
-    showDialog(
-      context: context,
-      barrierColor: Colors.black.withOpacity(0.85),
-      builder: (_) => _MovieDetailDialog(movie: movie),
-    );
-  }
 }
 
 // ── Movie Card ─────────────────────────────────────────────────────────────────
 class _MovieCard extends StatefulWidget {
   final _Movie movie;
   final VoidCallback onTap;
-
   const _MovieCard({required this.movie, required this.onTap});
 
   @override
@@ -251,7 +250,6 @@ class _MovieCardState extends State<_MovieCard> {
                         child: Center(child: Icon(Icons.movie_rounded, color: Colors.white.withOpacity(0.3), size: 40)),
                       )),
                 ),
-                // Gradient on hover
                 Positioned.fill(
                   child: AnimatedOpacity(
                     opacity: _hovered ? 1.0 : 0.0,
@@ -267,7 +265,6 @@ class _MovieCardState extends State<_MovieCard> {
                     ),
                   ),
                 ),
-                // Rating badge
                 Positioned(
                   top: 8, right: 8,
                   child: Container(
@@ -284,7 +281,6 @@ class _MovieCardState extends State<_MovieCard> {
                     ),
                   ),
                 ),
-                // Hover info
                 Positioned(
                   bottom: 0, left: 0, right: 0,
                   child: AnimatedOpacity(
@@ -318,123 +314,6 @@ class _MovieCardState extends State<_MovieCard> {
           ),
         ),
       ),
-    );
-  }
-}
-
-// ── Movie Detail Dialog ────────────────────────────────────────────────────────
-class _MovieDetailDialog extends StatelessWidget {
-  final _Movie movie;
-  const _MovieDetailDialog({required this.movie});
-
-  @override
-  Widget build(BuildContext context) {
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 60, vertical: 40),
-      child: Container(
-        constraints: const BoxConstraints(maxWidth: 780, maxHeight: 520),
-        decoration: BoxDecoration(
-          color: const Color(0xFF12122A),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: Colors.white.withOpacity(0.08)),
-        ),
-        child: Row(
-          children: [
-            // Poster
-            ClipRRect(
-              borderRadius: const BorderRadius.horizontal(left: Radius.circular(16)),
-              child: SizedBox(
-                width: 240,
-                child: Image.network(movie.imageUrl, fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
-                      color: const Color(0xFF1A1A2E),
-                      child: Center(child: Icon(Icons.movie_rounded, color: Colors.white.withOpacity(0.2), size: 60)),
-                    )),
-              ),
-            ),
-            // Info
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(28),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Align(
-                      alignment: Alignment.topRight,
-                      child: GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Container(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(color: Colors.white.withOpacity(0.07), shape: BoxShape.circle),
-                          child: Icon(Icons.close, color: Colors.white.withOpacity(0.6), size: 16),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(movie.title,
-                        style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w800, letterSpacing: -0.3)),
-                    const SizedBox(height: 10),
-                    Wrap(
-                      spacing: 8, runSpacing: 6,
-                      children: [
-                        _Badge(movie.year, const Color(0xFF1E90FF)),
-                        _Badge(movie.director, const Color(0xFF6C63FF)),
-                        ...movie.genres.take(2).map((g) => _Badge(g, const Color(0xFF00C896))),
-                        _Badge('⭐ ${movie.rating}', const Color(0xFFFFC107)),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                    Divider(color: Colors.white.withOpacity(0.08)),
-                    const SizedBox(height: 12),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Text(movie.description,
-                            style: TextStyle(color: Colors.white.withOpacity(0.75), fontSize: 13.5, height: 1.65)),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: () {},
-                        icon: const Icon(Icons.play_arrow_rounded, size: 20),
-                        label: const Text('Reproducir', style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14)),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1E90FF),
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(vertical: 14),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                          elevation: 0,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _Badge extends StatelessWidget {
-  final String text;
-  final Color color;
-  const _Badge(this.text, this.color);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.15),
-        borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: color.withOpacity(0.3)),
-      ),
-      child: Text(text, style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600)),
     );
   }
 }
