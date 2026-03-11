@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import '../widgets/carousel_section.dart';
 
 // ── Data ───────────────────────────────────────────────────────────────────────
 class _FeaturedItem {
@@ -55,12 +56,7 @@ class _SmallCard {
   final String imageUrl;
   final double rating;
 
-  const _SmallCard({
-    required this.title,
-    required this.year,
-    required this.imageUrl,
-    required this.rating,
-  });
+  const _SmallCard({required this.title, required this.year, required this.imageUrl, required this.rating});
 }
 
 const _smallCards = [
@@ -74,7 +70,7 @@ const _smallCards = [
   _SmallCard(title: 'Mandalorian', year: '2019', imageUrl: 'https://m.media-amazon.com/images/M/MV5BNjgxZGM0OWUtZGY1MS00MWRmLTk2N2ItYjQyZTI1OThlZDliXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg', rating: 8.7),
 ];
 
-// ── HomePage ───────────────────────────────────────────────────────────────────
+// ── HomeView ───────────────────────────────────────────────────────────────────
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
 
@@ -93,11 +89,8 @@ class _HomeViewState extends State<HomeView> {
     _pageController = PageController();
     _timer = Timer.periodic(const Duration(seconds: 5), (_) {
       final next = (_current + 1) % _featured.length;
-      _pageController.animateToPage(
-        next,
-        duration: const Duration(milliseconds: 600),
-        curve: Curves.easeInOut,
-      );
+      _pageController.animateToPage(next,
+          duration: const Duration(milliseconds: 600), curve: Curves.easeInOut);
     });
   }
 
@@ -112,77 +105,67 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Container(
       color: const Color(0xFF0D0D1A),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // ── Hero Carousel ──────────────────────────────────────────────
-            SizedBox(
-              height: 460,
-              child: Stack(
-                children: [
-                  PageView.builder(
-                    controller: _pageController,
-                    itemCount: _featured.length,
-                    onPageChanged: (i) => setState(() => _current = i),
-                    itemBuilder: (_, i) => _HeroSlide(item: _featured[i]),
-                  ),
-                  // Dot indicators
-                  Positioned(
-                    bottom: 20,
-                    left: 0,
-                    right: 0,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(
-                        _featured.length,
-                        (i) => AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          margin: const EdgeInsets.symmetric(horizontal: 4),
-                          width: _current == i ? 24 : 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            color: _current == i
-                                ? const Color(0xFF1E90FF)
-                                : Colors.white.withOpacity(0.3),
-                            borderRadius: BorderRadius.circular(4),
-                          ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Hero Carousel
+          SizedBox(
+            height: 460,
+            child: Stack(
+              children: [
+                PageView.builder(
+                  controller: _pageController,
+                  itemCount: _featured.length,
+                  onPageChanged: (i) => setState(() => _current = i),
+                  itemBuilder: (_, i) => _HeroSlide(item: _featured[i]),
+                ),
+                Positioned(
+                  bottom: 20, left: 0, right: 0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(_featured.length, (i) =>
+                      AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        width: _current == i ? 24 : 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          color: _current == i ? const Color(0xFF1E90FF) : Colors.white.withOpacity(0.3),
+                          borderRadius: BorderRadius.circular(4),
                         ),
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
 
-            // ── "Esta semana" small cards ──────────────────────────────────
-            const Padding(
-              padding: EdgeInsets.fromLTRB(32, 32, 32, 16),
-              child: Row(
-                children: [
-                  _SectionLabel('Destacados de la semana'),
-                ],
-              ),
+          // Destacados de la semana
+          const Padding(
+            padding: EdgeInsets.fromLTRB(32, 32, 32, 16),
+            child: _SectionLabel('Destacados de la semana'),
+          ),
+          SizedBox(
+            height: 200,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(horizontal: 32),
+              itemCount: _smallCards.length,
+              separatorBuilder: (_, __) => const SizedBox(width: 12),
+              itemBuilder: (_, i) => _SmallMovieCard(card: _smallCards[i]),
             ),
-            SizedBox(
-              height: 200,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 32),
-                itemCount: _smallCards.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 12),
-                itemBuilder: (_, i) => _SmallMovieCard(card: _smallCards[i]),
-              ),
-            ),
-            const SizedBox(height: 40),
-          ],
-        ),
+          ),
+
+          // Estrenos carousel
+          const SizedBox(height: 8),
+          const CarouselSection(),
+        ],
       ),
     );
   }
 }
 
-// ── Hero Slide ─────────────────────────────────────────────────────────────────
 class _HeroSlide extends StatelessWidget {
   final _FeaturedItem item;
   const _HeroSlide({required this.item});
@@ -194,33 +177,25 @@ class _HeroSlide extends StatelessWidget {
       children: [
         Image.network(item.imageUrl, fit: BoxFit.cover,
             errorBuilder: (_, __, ___) => Container(color: const Color(0xFF1A1A2E))),
-        // Dark gradient
         Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.centerRight,
-              end: Alignment.centerLeft,
-              colors: [
-                Colors.transparent,
-                Colors.black.withOpacity(0.85),
-              ],
+              begin: Alignment.centerRight, end: Alignment.centerLeft,
+              colors: [Colors.transparent, Colors.black.withOpacity(0.85)],
             ),
           ),
         ),
         Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
+              begin: Alignment.topCenter, end: Alignment.bottomCenter,
               colors: [Colors.transparent, const Color(0xFF0D0D1A)],
               stops: const [0.6, 1.0],
             ),
           ),
         ),
-        // Content
         Positioned(
-          left: 48,
-          bottom: 60,
+          left: 48, bottom: 60,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
@@ -232,27 +207,21 @@ class _HeroSlide extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                   border: Border.all(color: const Color(0xFF1E90FF).withOpacity(0.4)),
                 ),
-                child: Text(item.tag,
-                    style: const TextStyle(color: Color(0xFF1E90FF), fontSize: 11, fontWeight: FontWeight.w700, letterSpacing: 1)),
+                child: Text(item.tag, style: const TextStyle(color: Color(0xFF1E90FF), fontSize: 11, fontWeight: FontWeight.w700, letterSpacing: 1)),
               ),
               const SizedBox(height: 12),
-              Text(item.title,
-                  style: const TextStyle(color: Colors.white, fontSize: 38, fontWeight: FontWeight.w800, letterSpacing: -0.5)),
+              Text(item.title, style: const TextStyle(color: Colors.white, fontSize: 38, fontWeight: FontWeight.w800, letterSpacing: -0.5)),
               const SizedBox(height: 8),
               SizedBox(
                 width: 380,
-                child: Text(item.subtitle,
-                    style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 14, height: 1.5)),
+                child: Text(item.subtitle, style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 14, height: 1.5)),
               ),
               const SizedBox(height: 6),
-              Row(
-                children: [
-                  const Icon(Icons.star_rounded, color: Color(0xFFFFC107), size: 16),
-                  const SizedBox(width: 4),
-                  Text('${item.rating}',
-                      style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600)),
-                ],
-              ),
+              Row(children: [
+                const Icon(Icons.star_rounded, color: Color(0xFFFFC107), size: 16),
+                const SizedBox(width: 4),
+                Text('${item.rating}', style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600)),
+              ]),
             ],
           ),
         ),
@@ -261,7 +230,6 @@ class _HeroSlide extends StatelessWidget {
   }
 }
 
-// ── Small Movie Card ───────────────────────────────────────────────────────────
 class _SmallMovieCard extends StatefulWidget {
   final _SmallCard card;
   const _SmallMovieCard({required this.card});
@@ -296,15 +264,13 @@ class _SmallMovieCardState extends State<_SmallMovieCard> {
             children: [
               Image.network(widget.card.imageUrl, fit: BoxFit.cover,
                   errorBuilder: (_, __, ___) => Container(color: const Color(0xFF1A1A2E))),
-              // Bottom gradient + info
               Positioned(
                 bottom: 0, left: 0, right: 0,
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
-                      begin: Alignment.bottomCenter,
-                      end: Alignment.topCenter,
+                      begin: Alignment.bottomCenter, end: Alignment.topCenter,
                       colors: [Colors.black.withOpacity(0.9), Colors.transparent],
                     ),
                   ),
@@ -312,34 +278,24 @@ class _SmallMovieCardState extends State<_SmallMovieCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(widget.card.title,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                      Text(widget.card.title, maxLines: 1, overflow: TextOverflow.ellipsis,
                           style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w700)),
                       const SizedBox(height: 2),
-                      Row(
-                        children: [
-                          const Icon(Icons.star_rounded, color: Color(0xFFFFC107), size: 10),
-                          const SizedBox(width: 3),
-                          Text('${widget.card.rating}',
-                              style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 10)),
-                        ],
-                      ),
+                      Row(children: [
+                        const Icon(Icons.star_rounded, color: Color(0xFFFFC107), size: 10),
+                        const SizedBox(width: 3),
+                        Text('${widget.card.rating}', style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 10)),
+                      ]),
                     ],
                   ),
                 ),
               ),
-              // Rating badge top
               Positioned(
                 top: 6, right: 6,
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                  decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.65),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Text(widget.card.year,
-                      style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 9)),
+                  decoration: BoxDecoration(color: Colors.black.withOpacity(0.65), borderRadius: BorderRadius.circular(4)),
+                  child: Text(widget.card.year, style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 9)),
                 ),
               ),
             ],
