@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'widgets/navbar.dart';
+import 'views/home_view.dart';
 import 'views/series_page.dart';
+import 'views/movies_page.dart';
 import 'views/suscription_page.dart';
 import 'views/character_page.dart';
 
@@ -31,15 +33,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   String _currentPage = 'Home';
 
+  void _onNavItemTap(String item) => setState(() => _currentPage = item);
+  void _onSubscribeTap() => setState(() => _currentPage = 'Suscribirse');
   void _onSearchTap() {}
-
-  void _onNavItemTap(String item) {
-    setState(() => _currentPage = item);
-  }
-
-  void _onSubscribeTap() {
-    setState(() => _currentPage = 'Suscribirse');
-  }
 
   Widget _buildBody() {
     switch (_currentPage) {
@@ -50,16 +46,10 @@ class _HomePageState extends State<HomePage> {
       case 'Suscribirse':
         return const SuscripcionPage();
       case 'Películas':
-        return const Center(
-          child: Text('Películas - Próximamente',
-              style: TextStyle(color: Colors.white, fontSize: 20)),
-        );
+        return const MoviesPage();
       case 'Home':
       default:
-        return const Center(
-          child: Text('Welcome to Disney API',
-              style: TextStyle(color: Colors.white, fontSize: 20)),
-        );
+        return const HomeView();
     }
   }
 
@@ -73,7 +63,9 @@ class _HomePageState extends State<HomePage> {
             onNavItemTap: _onNavItemTap,
             onSubscribeTap: _onSubscribeTap,
           ),
-          Expanded(child: _buildBody()),
+          Expanded(
+            child: _buildBody(),
+          ),
         ],
       ),
     );

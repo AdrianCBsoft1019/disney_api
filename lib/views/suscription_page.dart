@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/footer.dart';
 
 class SuscripcionPage extends StatefulWidget {
   const SuscripcionPage({super.key});
@@ -221,6 +222,7 @@ class _SuscripcionPageState extends State<SuscripcionPage> {
             ),
 
             const SizedBox(height: 60),
+            const Footer(),
           ],
         ),
       ),

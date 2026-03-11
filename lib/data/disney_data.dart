@@ -10,9 +10,9 @@ class DisneyData {
       title: 'Frozen II',
       year: '2019',
       poster:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNbm28EZhooHofMhqRbjqYXm58jMZo87-n1A&s',
+          'https://image.tmdb.org/t/p/w500/qdfARIhgpgZOBh3vfNhWS4hmSo3.jpg',
       backdrop:
-          'https://los40.com/resizer/v2/GMVVEZP26VMD5JQXDYU3JL5MZQ.jpg?auth=4a012cab3376474029128855b4473d2a5d3044d1f2774325ab9bb4c864b45032&quality=70&width=1200&height=675&smart=true',
+          'https://image.tmdb.org/t/p/w1280/xJWPZIYOEFIjZpBL7SVBGnzRLeV.jpg',
       type: 'movie',
       description:
           'Elsa, Anna, Kristoff, Olaf y Sven viajan más allá de Arendelle.',
@@ -25,9 +25,9 @@ class DisneyData {
       title: 'Encanto',
       year: '2021',
       poster:
-          'https://lumiere-a.akamaihd.net/v1/images/encanto_ka_las_pay1_92ad7410.jpeg',
+          'https://image.tmdb.org/t/p/w500/4j0PNHkMr5ax3IA8tjtxcmPU3QT.jpg',
       backdrop:
-          'https://www.infobae.com/resizer/v2/TGR7MGNDXBHG3BOOTPWKEY6WRA.png?auth=2f23fc348ab5ef1e08d34e19739e45f64b3d732b95464375009d7b6d2ec896fa&smart=true&width=1024&height=512&quality=85',
+          'https://image.tmdb.org/t/p/w1280/3G1Q5xF40HkUBJXxt2DQgQzKTp5.jpg',
       type: 'movie',
       description: 'La historia de los Madrigal, una familia extraordinaria.',
       genres: ['Animación', 'Familia', 'Musical'],
@@ -54,7 +54,7 @@ class DisneyData {
       poster:
           'https://http2.mlstatic.com/D_NQ_NP_820377-MLU70799697688_082023-O.webp',
       backdrop:
-          'https://media.gqmagazine.fr/photos/63dce1f582e384fe4d7ac7ef/master/pass/raw.jpeg',
+          'https://image.tmdb.org/t/p/w1280/s16H6tpK2utvwpazeGkIWt3NvAq.jpg',
       type: 'movie',
       description: 'Jake Sully y Ney\'tiri han formado una familia en Pandora.',
       genres: ['Acción', 'Aventura', 'Ciencia Ficción'],
@@ -81,9 +81,9 @@ class DisneyData {
       title: 'Elementos',
       year: '2023',
       poster:
-          'https://purodiseno.lat/wp-content/uploads/2023/09/ELEMENTOS-POSTER-.jpg',
+          'https://image.tmdb.org/t/p/w500/8poVB7at3b4PcPHAn498gANDQAH.jpg',
       backdrop:
-          'https://cadenaser.com/resizer/v2/6DOR626ASZGEDLHFVDOTP2EJT4.jpg?auth=fe54a80cc9512727e7d748ecf2217b5192cd875aef342b1b24f0b1ad4d902932',
+          'https://image.tmdb.org/t/p/w1280/fA3JFnlDHFuPnOsX8iO8lNK7YxS.jpg',
       type: 'movie',
       description: 'En una ciudad donde los elementos conviven.',
       genres: ['Animación', 'Familia', 'Comedia'],
@@ -95,9 +95,9 @@ class DisneyData {
       title: 'Toy Story 4',
       year: '2019',
       poster:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwDIjEoDK0n7sWZHGWJlrLqfq8v6OqWX_Wig&s',
+          'https://image.tmdb.org/t/p/w500/w9kR8qbmQ01HwnvK4alvnQ2ca0L.jpg',
       backdrop:
-          'https://lumiere-a.akamaihd.net/v1/images/toy-story-4-background_ab0c7920.jpeg',
+          'https://image.tmdb.org/t/p/w1280/5yGSaJGwsMFosBXpZA8JaXaFLdI.jpg',
       type: 'movie',
       description:
           'Woody y su pandilla emprenden una nueva aventura cuando Bonnie entra a la escuela.',
@@ -110,9 +110,9 @@ class DisneyData {
       title: 'Coco',
       year: '2017',
       poster:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSL_k7lXNJ5J5B5B5B5B5B5B5B5B5B5B5B5B5B&s',
+          'https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg',
       backdrop:
-          'https://lumiere-a.akamaihd.net/v1/images/coco-background_3ab6c8d5.jpeg',
+          'https://image.tmdb.org/t/p/w1280/askg3SMvhqEl4OL52YuvdtY40Yb.jpg',
       type: 'movie',
       description:
           'Miguel persigue su pasión por la música en el colorido mundo de Coco.',
@@ -125,9 +125,9 @@ class DisneyData {
       title: 'Aladdin',
       year: '2019',
       poster:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS0lZ1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X1X&s',
+          'https://image.tmdb.org/t/p/w500/zcuz9tchQ2ygJbBq4UxQLWYuSFG.jpg',
       backdrop:
-          'https://lumiere-a.akamaihd.net/v1/images/aladdin-background_c9b9c9d9.jpeg',
+          'https://image.tmdb.org/t/p/w1280/v4yVTbbl8dE1UP2dWu5CLyaXOku.jpg',
       type: 'movie',
       description:
           'Un joven ladrón descubre un poder mágico y se enamora de una princesa.',
@@ -140,9 +140,9 @@ class DisneyData {
       title: 'La Reina de las Nieves',
       year: '2013',
       poster:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT_T_T_T_T_T_T_T_T_T_T_T_T_T_T_T_T_T&s',
+          'https://image.tmdb.org/t/p/w500/iG1sE1dkpzCjMiLDCQrEfI2BVPQ.jpg',
       backdrop:
-          'https://lumiere-a.akamaihd.net/v1/images/frozen-background_a9a8c8d8.jpeg',
+          'https://image.tmdb.org/t/p/w1280/yMzT4RXhOEY3pOhXAbZnC4JWksk.jpg',
       type: 'movie',
       description:
           'La primera aventura de Elsa, Anna y Olaf en un reino helado.',
@@ -155,9 +155,9 @@ class DisneyData {
       title: 'Raya y el Último Dragón',
       year: '2021',
       poster:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcX_X_X_X_X_X_X_X_X_X_X_X_X_X_X_X_X_X&s',
+          'https://image.tmdb.org/t/p/w500/lPsD10PP4rgUGiGR4CCXA6iY0QQ.jpg',
       backdrop:
-          'https://lumiere-a.akamaihd.net/v1/images/raya-background_b9b8c8d8.jpeg',
+          'https://image.tmdb.org/t/p/w1280/8ZEpbFbG4EJH3YVkl7JHs3mGcvp.jpg',
       type: 'movie',
       description: 'Raya busca el último dragón para salvar su mundo.',
       genres: ['Animación', 'Aventura', 'Acción'],
@@ -169,9 +169,9 @@ class DisneyData {
       title: 'Mundo de Pixar',
       year: '2020',
       poster:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcY_Y_Y_Y_Y_Y_Y_Y_Y_Y_Y_Y_Y_Y_Y_Y_Y_Y&s',
+          'https://image.tmdb.org/t/p/w500/kf456ZqeC45XTvo6W9pXooreBYc.jpg',
       backdrop:
-          'https://lumiere-a.akamaihd.net/v1/images/pixar-background_c9c8c8d8.jpeg',
+          'https://image.tmdb.org/t/p/w1280/dFpqnFzCpwWr5wFKhZNkI1VqCDm.jpg',
       type: 'movie',
       description:
           'Un alma viaja a través de mundos extraordinarios descubriendo su propósito.',
@@ -184,9 +184,9 @@ class DisneyData {
       title: 'Hercules',
       year: '1997',
       poster:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcZ_Z_Z_Z_Z_Z_Z_Z_Z_Z_Z_Z_Z_Z_Z_Z_Z_Z&s',
+          'https://image.tmdb.org/t/p/w500/4iVCMbAMTgHVlbGDRijRBePSUJJ.jpg',
       backdrop:
-          'https://lumiere-a.akamaihd.net/v1/images/hercules-background_d9d8d8d8.jpeg',
+          'https://image.tmdb.org/t/p/w1280/bHm8MZZyXVtKFBaJCltqtgszRiS.jpg',
       type: 'movie',
       description:
           'Hércules descubre su verdadero origen y se convierte en un héroe.',
@@ -199,9 +199,9 @@ class DisneyData {
       title: 'La Bella y la Bestia',
       year: '1991',
       poster:
-          'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcA_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A_A&s',
+          'https://image.tmdb.org/t/p/w500/tWqifoYuwLETmmasnGHO7xBjEtt.jpg',
       backdrop:
-          'https://lumiere-a.akamaihd.net/v1/images/beauty-background_e9e8e8d8.jpeg',
+          'https://image.tmdb.org/t/p/w1280/lQpOAMR5iQJDjFqnVIEqXRSHBMu.jpg',
       type: 'movie',
       description: 'Bella se enamora de la Bestia en su castillo encantado.',
       genres: ['Animación', 'Aventura', 'Familia'],

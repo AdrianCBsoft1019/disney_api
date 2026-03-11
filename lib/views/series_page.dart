@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/footer.dart';
 
 // ── Series data model ──────────────────────────────────────────────────────────
 class Series {
@@ -307,6 +308,7 @@ class _SeriesPageState extends State<SeriesPage> {
           ),
 
           const SliverToBoxAdapter(child: SizedBox(height: 48)),
+          const SliverToBoxAdapter(child: Footer()),
         ],
       ),
     );
