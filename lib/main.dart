@@ -3,6 +3,7 @@ import 'widgets/navbar.dart';
 import 'widgets/footer.dart';
 import 'views/home_view.dart';
 import 'views/series_page.dart';
+import 'views/movies_page.dart';
 import 'views/suscription_page.dart';
 import 'views/character_page.dart';
 
@@ -46,10 +47,7 @@ class _HomePageState extends State<HomePage> {
       case 'Suscribirse':
         return const SuscripcionPage();
       case 'Películas':
-        return const Center(
-          child: Text('Películas - Próximamente',
-              style: TextStyle(color: Colors.white, fontSize: 20)),
-        );
+        return const MoviesPage();
       case 'Home':
       default:
         return const HomeView();
@@ -61,21 +59,20 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Column(
         children: [
+          // Navbar: estático arriba
           Navbar(
             onSearchTap: _onSearchTap,
             onNavItemTap: _onNavItemTap,
             onSubscribeTap: _onSubscribeTap,
           ),
+
+          // Contenido: ocupa todo el espacio y cada vista maneja su propio scroll
           Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildBody(),
-                  const Footer(),
-                ],
-              ),
-            ),
+            child: _buildBody(),
           ),
+
+          // Footer: estático abajo
+          const Footer(),
         ],
       ),
     );

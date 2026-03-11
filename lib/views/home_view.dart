@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import '../widgets/carousel_section.dart';
 
-// ── Data ───────────────────────────────────────────────────────────────────────
 class _FeaturedItem {
   final String title;
   final String subtitle;
@@ -55,7 +54,6 @@ class _SmallCard {
   final String year;
   final String imageUrl;
   final double rating;
-
   const _SmallCard({required this.title, required this.year, required this.imageUrl, required this.rating});
 }
 
@@ -103,69 +101,78 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
+    // SingleChildScrollView para que todo el Home sea desplazable verticalmente
     return Container(
       color: const Color(0xFF0D0D1A),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Hero Carousel
-          SizedBox(
-            height: 460,
-            child: Stack(
-              children: [
-                PageView.builder(
-                  controller: _pageController,
-                  itemCount: _featured.length,
-                  onPageChanged: (i) => setState(() => _current = i),
-                  itemBuilder: (_, i) => _HeroSlide(item: _featured[i]),
-                ),
-                Positioned(
-                  bottom: 20, left: 0, right: 0,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(_featured.length, (i) =>
-                      AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: _current == i ? 24 : 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: _current == i ? const Color(0xFF1E90FF) : Colors.white.withOpacity(0.3),
-                          borderRadius: BorderRadius.circular(4),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // ── Hero Carousel (altura fija, funciona dentro del scroll) ──────
+            SizedBox(
+              height: 460,
+              child: Stack(
+                children: [
+                  PageView.builder(
+                    controller: _pageController,
+                    itemCount: _featured.length,
+                    onPageChanged: (i) => setState(() => _current = i),
+                    itemBuilder: (_, i) => _HeroSlide(item: _featured[i]),
+                  ),
+                  Positioned(
+                    bottom: 20, left: 0, right: 0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(_featured.length, (i) =>
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
+                          width: _current == i ? 24 : 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: _current == i
+                                ? const Color(0xFF1E90FF)
+                                : Colors.white.withOpacity(0.3),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
 
-          // Destacados de la semana
-          const Padding(
-            padding: EdgeInsets.fromLTRB(32, 32, 32, 16),
-            child: _SectionLabel('Destacados de la semana'),
-          ),
-          SizedBox(
-            height: 200,
-            child: ListView.separated(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 32),
-              itemCount: _smallCards.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 12),
-              itemBuilder: (_, i) => _SmallMovieCard(card: _smallCards[i]),
+            // ── Destacados de la semana ──────────────────────────────────────
+            const Padding(
+              padding: EdgeInsets.fromLTRB(32, 32, 32, 16),
+              child: _SectionLabel('Destacados de la semana'),
             ),
-          ),
+            // ListView horizontal con altura fija — no necesita NeverScrollableScrollPhysics
+            SizedBox(
+              height: 200,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                itemCount: _smallCards.length,
+                separatorBuilder: (_, __) => const SizedBox(width: 12),
+                itemBuilder: (_, i) => _SmallMovieCard(card: _smallCards[i]),
+              ),
+            ),
 
-          // Estrenos carousel
-          const SizedBox(height: 8),
-          const CarouselSection(),
-        ],
+            // ── Estrenos carousel ────────────────────────────────────────────
+            const SizedBox(height: 8),
+            const CarouselSection(),
+
+            const SizedBox(height: 24),
+          ],
+        ),
       ),
     );
   }
 }
 
+// ── Hero Slide ─────────────────────────────────────────────────────────────────
 class _HeroSlide extends StatelessWidget {
   final _FeaturedItem item;
   const _HeroSlide({required this.item});
@@ -207,20 +214,26 @@ class _HeroSlide extends StatelessWidget {
                   borderRadius: BorderRadius.circular(4),
                   border: Border.all(color: const Color(0xFF1E90FF).withOpacity(0.4)),
                 ),
-                child: Text(item.tag, style: const TextStyle(color: Color(0xFF1E90FF), fontSize: 11, fontWeight: FontWeight.w700, letterSpacing: 1)),
+                child: Text(item.tag,
+                    style: const TextStyle(color: Color(0xFF1E90FF), fontSize: 11,
+                        fontWeight: FontWeight.w700, letterSpacing: 1)),
               ),
               const SizedBox(height: 12),
-              Text(item.title, style: const TextStyle(color: Colors.white, fontSize: 38, fontWeight: FontWeight.w800, letterSpacing: -0.5)),
+              Text(item.title,
+                  style: const TextStyle(color: Colors.white, fontSize: 38,
+                      fontWeight: FontWeight.w800, letterSpacing: -0.5)),
               const SizedBox(height: 8),
               SizedBox(
                 width: 380,
-                child: Text(item.subtitle, style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 14, height: 1.5)),
+                child: Text(item.subtitle,
+                    style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 14, height: 1.5)),
               ),
               const SizedBox(height: 6),
               Row(children: [
                 const Icon(Icons.star_rounded, color: Color(0xFFFFC107), size: 16),
                 const SizedBox(width: 4),
-                Text('${item.rating}', style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600)),
+                Text('${item.rating}',
+                    style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w600)),
               ]),
             ],
           ),
@@ -230,6 +243,7 @@ class _HeroSlide extends StatelessWidget {
   }
 }
 
+// ── Small Movie Card ───────────────────────────────────────────────────────────
 class _SmallMovieCard extends StatefulWidget {
   final _SmallCard card;
   const _SmallMovieCard({required this.card});
@@ -254,7 +268,8 @@ class _SmallMovieCardState extends State<_SmallMovieCard> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           boxShadow: _hovered
-              ? [BoxShadow(color: const Color(0xFF1E90FF).withOpacity(0.35), blurRadius: 16, offset: const Offset(0, 6))]
+              ? [BoxShadow(color: const Color(0xFF1E90FF).withOpacity(0.35),
+                  blurRadius: 16, offset: const Offset(0, 6))]
               : [],
         ),
         child: ClipRRect(
@@ -279,12 +294,14 @@ class _SmallMovieCardState extends State<_SmallMovieCard> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(widget.card.title, maxLines: 1, overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w700)),
+                          style: const TextStyle(color: Colors.white, fontSize: 11,
+                              fontWeight: FontWeight.w700)),
                       const SizedBox(height: 2),
                       Row(children: [
                         const Icon(Icons.star_rounded, color: Color(0xFFFFC107), size: 10),
                         const SizedBox(width: 3),
-                        Text('${widget.card.rating}', style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 10)),
+                        Text('${widget.card.rating}',
+                            style: TextStyle(color: Colors.white.withOpacity(0.8), fontSize: 10)),
                       ]),
                     ],
                   ),
@@ -294,8 +311,11 @@ class _SmallMovieCardState extends State<_SmallMovieCard> {
                 top: 6, right: 6,
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                  decoration: BoxDecoration(color: Colors.black.withOpacity(0.65), borderRadius: BorderRadius.circular(4)),
-                  child: Text(widget.card.year, style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 9)),
+                  decoration: BoxDecoration(
+                      color: Colors.black.withOpacity(0.65),
+                      borderRadius: BorderRadius.circular(4)),
+                  child: Text(widget.card.year,
+                      style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 9)),
                 ),
               ),
             ],
@@ -314,9 +334,12 @@ class _SectionLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Container(width: 4, height: 20, decoration: BoxDecoration(color: const Color(0xFF1E90FF), borderRadius: BorderRadius.circular(2))),
+        Container(width: 4, height: 20,
+            decoration: BoxDecoration(color: const Color(0xFF1E90FF),
+                borderRadius: BorderRadius.circular(2))),
         const SizedBox(width: 10),
-        Text(text, style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700)),
+        Text(text, style: const TextStyle(color: Colors.white, fontSize: 18,
+            fontWeight: FontWeight.w700)),
       ],
     );
   }

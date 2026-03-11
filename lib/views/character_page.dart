@@ -18,7 +18,6 @@ class _CharacterPageState extends State<CharacterPage> {
   int _totalPages = 1;
   int _totalCount = 0;
 
-  // Búsqueda
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
   bool _isSearching = false;
@@ -51,7 +50,10 @@ class _CharacterPageState extends State<CharacterPage> {
   }
 
   Future<void> _loadCharacters() async {
-    setState(() { _loading = true; _error = null; });
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
     try {
       final result = await ApiService.getCharacters(page: 1, pageSize: 50);
       setState(() {
@@ -73,8 +75,8 @@ class _CharacterPageState extends State<CharacterPage> {
     if (_loadingMore || _currentPage >= _totalPages) return;
     setState(() => _loadingMore = true);
     try {
-      final result = await ApiService.getCharacters(
-          page: _currentPage + 1, pageSize: 50);
+      final result =
+          await ApiService.getCharacters(page: _currentPage + 1, pageSize: 50);
       setState(() {
         _characters.addAll(result['characters'] as List<DisneyCharacter>);
         _currentPage++;
@@ -115,58 +117,110 @@ class _CharacterPageState extends State<CharacterPage> {
 
   @override
   Widget build(BuildContext context) {
+    // ── Casos especiales: loading / error / sin resultados ─────────────────
+    if (_loading) {
+      return Container(
+        color: const Color(0xFF0D0D1A),
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(color: Color(0xFF1E90FF)),
+              SizedBox(height: 16),
+              Text('Cargando personajes de Disney...',
+                  style: TextStyle(color: Colors.white54, fontSize: 14)),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (_error != null) {
+      return Container(
+        color: const Color(0xFF0D0D1A),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.wifi_off_rounded, color: Colors.white24, size: 56),
+              const SizedBox(height: 16),
+              Text(_error!,
+                  style:
+                      const TextStyle(color: Colors.white70, fontSize: 16)),
+              const SizedBox(height: 24),
+              ElevatedButton.icon(
+                onPressed: _loadCharacters,
+                icon: const Icon(Icons.refresh_rounded, size: 18),
+                label: const Text('Reintentar'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF1E90FF),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8)),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    // ── Layout principal: CustomScrollView (igual que SeriesPage) ──────────
+    // Esto soluciona el problema de scroll: el header va como SliverToBoxAdapter
+    // y el grid va como SliverGrid, todo en un solo scroll coordinado.
     return Container(
       color: const Color(0xFF0D0D1A),
-      child: Column(
-        children: [
+      child: CustomScrollView(
+        controller: _scrollController,
+        slivers: [
           // ── Header ──────────────────────────────────────────────────────
-          Padding(
-            padding: const EdgeInsets.fromLTRB(32, 32, 32, 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 4,
-                      height: 32,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1E90FF),
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    const Text(
-                      'Personajes',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 3),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF00C896).withOpacity(0.15),
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(
-                            color: const Color(0xFF00C896).withOpacity(0.4)),
-                      ),
-                      child: const Text(
-                        'Disney API',
-                        style: TextStyle(
-                          color: Color(0xFF00C896),
-                          fontSize: 10,
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1,
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(32, 32, 32, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        width: 4,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1E90FF),
+                          borderRadius: BorderRadius.circular(2),
                         ),
                       ),
-                    ),
-                    const Spacer(),
-                    if (!_loading && _error == null)
+                      const SizedBox(width: 12),
+                      const Text(
+                        'Personajes',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.w700,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 3),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF00C896).withOpacity(0.15),
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(
+                              color: const Color(0xFF00C896).withOpacity(0.4)),
+                        ),
+                        child: const Text(
+                          'Disney API',
+                          style: TextStyle(
+                            color: Color(0xFF00C896),
+                            fontSize: 10,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1,
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
                       Text(
                         _isSearching
                             ? '${_searchResults.length} resultados'
@@ -176,161 +230,127 @@ class _CharacterPageState extends State<CharacterPage> {
                           fontSize: 13,
                         ),
                       ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                // Search bar
-                Container(
-                  height: 44,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.06),
-                    borderRadius: BorderRadius.circular(8),
-                    border:
-                        Border.all(color: Colors.white.withOpacity(0.1)),
+                    ],
                   ),
-                  child: TextField(
-                    controller: _searchController,
-                    onChanged: (v) {
-                      if (v.isEmpty) {
-                        setState(() {
-                          _isSearching = false;
-                          _searchQuery = '';
-                          _searchResults = [];
-                        });
-                      }
-                    },
-                    onSubmitted: _search,
-                    style: const TextStyle(
-                        color: Colors.white, fontSize: 14),
-                    decoration: InputDecoration(
-                      hintText: 'Buscar personaje... (presiona Enter)',
-                      hintStyle: TextStyle(
-                          color: Colors.white.withOpacity(0.3),
-                          fontSize: 14),
-                      prefixIcon: Icon(Icons.search,
-                          color: Colors.white.withOpacity(0.3), size: 20),
-                      suffixIcon: _searchController.text.isNotEmpty
-                          ? GestureDetector(
-                              onTap: () {
-                                _searchController.clear();
-                                setState(() {
-                                  _isSearching = false;
-                                  _searchQuery = '';
-                                  _searchResults = [];
-                                });
-                              },
-                              child: Icon(Icons.close,
-                                  color: Colors.white.withOpacity(0.3),
-                                  size: 18),
-                            )
-                          : null,
-                      border: InputBorder.none,
-                      contentPadding:
-                          const EdgeInsets.symmetric(vertical: 12),
+                  const SizedBox(height: 20),
+                  // Search bar
+                  Container(
+                    height: 44,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.06),
+                      borderRadius: BorderRadius.circular(8),
+                      border:
+                          Border.all(color: Colors.white.withOpacity(0.1)),
+                    ),
+                    child: TextField(
+                      controller: _searchController,
+                      onChanged: (v) {
+                        if (v.isEmpty) {
+                          setState(() {
+                            _isSearching = false;
+                            _searchQuery = '';
+                            _searchResults = [];
+                          });
+                        }
+                      },
+                      onSubmitted: _search,
+                      style:
+                          const TextStyle(color: Colors.white, fontSize: 14),
+                      decoration: InputDecoration(
+                        hintText: 'Buscar personaje... (presiona Enter)',
+                        hintStyle: TextStyle(
+                            color: Colors.white.withOpacity(0.3),
+                            fontSize: 14),
+                        prefixIcon: Icon(Icons.search,
+                            color: Colors.white.withOpacity(0.3), size: 20),
+                        suffixIcon: _searchController.text.isNotEmpty
+                            ? GestureDetector(
+                                onTap: () {
+                                  _searchController.clear();
+                                  setState(() {
+                                    _isSearching = false;
+                                    _searchQuery = '';
+                                    _searchResults = [];
+                                  });
+                                },
+                                child: Icon(Icons.close,
+                                    color: Colors.white.withOpacity(0.3),
+                                    size: 18),
+                              )
+                            : null,
+                        border: InputBorder.none,
+                        contentPadding:
+                            const EdgeInsets.symmetric(vertical: 12),
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 24),
-              ],
+                  const SizedBox(height: 28),
+                ],
+              ),
             ),
           ),
 
-          // ── Body ────────────────────────────────────────────────────────
-          Expanded(
-            child: _loading
-                ? const Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        CircularProgressIndicator(
-                            color: Color(0xFF1E90FF)),
-                        SizedBox(height: 16),
-                        Text('Cargando personajes de Disney...',
-                            style: TextStyle(
-                                color: Colors.white54, fontSize: 14)),
-                      ],
-                    ),
-                  )
-                : _error != null
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.wifi_off_rounded,
-                                color: Colors.white24, size: 56),
-                            const SizedBox(height: 16),
-                            Text(_error!,
-                                style: const TextStyle(
-                                    color: Colors.white70, fontSize: 16)),
-                            const SizedBox(height: 24),
-                            ElevatedButton.icon(
-                              onPressed: _loadCharacters,
-                              icon: const Icon(Icons.refresh_rounded,
-                                  size: 18),
-                              label: const Text('Reintentar'),
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF1E90FF),
-                                foregroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(8)),
-                              ),
-                            ),
-                          ],
+          // ── Sin resultados ───────────────────────────────────────────────
+          if (_displayList.isEmpty)
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 300,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.person_search,
+                          color: Colors.white24, size: 56),
+                      const SizedBox(height: 12),
+                      Text(
+                        _isSearching
+                            ? 'No se encontró "$_searchQuery"'
+                            : 'Sin personajes',
+                        style: const TextStyle(
+                            color: Colors.white38, fontSize: 15),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+          // ── Grid de personajes ───────────────────────────────────────────
+          if (_displayList.isNotEmpty)
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(32, 0, 32, 32),
+              sliver: SliverGrid(
+                gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 5,
+                  mainAxisSpacing: 20,
+                  crossAxisSpacing: 16,
+                  childAspectRatio: 0.68,
+                ),
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    // Indicador de carga al final
+                    if (index == _displayList.length) {
+                      return const Center(
+                        child: Padding(
+                          padding: EdgeInsets.all(16),
+                          child: CircularProgressIndicator(
+                              color: Color(0xFF1E90FF), strokeWidth: 2),
                         ),
-                      )
-                    : _displayList.isEmpty
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.person_search,
-                                    color: Colors.white24, size: 56),
-                                const SizedBox(height: 12),
-                                Text(
-                                  _isSearching
-                                      ? 'No se encontró "$_searchQuery"'
-                                      : 'Sin personajes',
-                                  style: const TextStyle(
-                                      color: Colors.white38,
-                                      fontSize: 15),
-                                ),
-                              ],
-                            ),
-                          )
-                        : GridView.builder(
-                            controller: _scrollController,
-                            padding: const EdgeInsets.fromLTRB(
-                                32, 0, 32, 32),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 5,
-                              mainAxisSpacing: 20,
-                              crossAxisSpacing: 16,
-                              childAspectRatio: 0.68,
-                            ),
-                            itemCount: _displayList.length +
-                                (_loadingMore ? 1 : 0),
-                            itemBuilder: (context, index) {
-                              if (index == _displayList.length) {
-                                return const Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(16),
-                                    child: CircularProgressIndicator(
-                                        color: Color(0xFF1E90FF),
-                                        strokeWidth: 2),
-                                  ),
-                                );
-                              }
-                              final character = _displayList[index];
-                              return _CharacterCard(
-                                character: character,
-                                onTap: () =>
-                                    _showDetail(context, character),
-                              );
-                            },
-                          ),
-          ),
+                      );
+                    }
+                    final character = _displayList[index];
+                    return _CharacterCard(
+                      character: character,
+                      onTap: () => _showDetail(context, character),
+                    );
+                  },
+                  childCount: _displayList.length + (_loadingMore ? 1 : 0),
+                ),
+              ),
+            ),
+
+          const SliverToBoxAdapter(child: SizedBox(height: 16)),
         ],
       ),
     );
@@ -388,7 +408,6 @@ class _CharacterCardState extends State<_CharacterCard> {
             borderRadius: BorderRadius.circular(12),
             child: Stack(
               children: [
-                // Foto del personaje
                 Positioned.fill(
                   child: widget.character.imageUrl.isNotEmpty
                       ? Image.network(
@@ -411,13 +430,10 @@ class _CharacterCardState extends State<_CharacterCard> {
                             );
                           },
                           errorBuilder: (_, __, ___) =>
-                              _NoImagePlaceholder(
-                                  name: widget.character.name),
+                              _NoImagePlaceholder(name: widget.character.name),
                         )
                       : _NoImagePlaceholder(name: widget.character.name),
                 ),
-
-                // Gradiente siempre visible en la parte inferior
                 Positioned.fill(
                   child: Container(
                     decoration: const BoxDecoration(
@@ -434,8 +450,6 @@ class _CharacterCardState extends State<_CharacterCard> {
                     ),
                   ),
                 ),
-
-                // Gradiente extra en hover
                 Positioned.fill(
                   child: AnimatedOpacity(
                     opacity: _hovered ? 1.0 : 0.0,
@@ -449,14 +463,11 @@ class _CharacterCardState extends State<_CharacterCard> {
                             const Color(0xFF1E90FF).withOpacity(0.15),
                             Colors.black.withOpacity(0.85),
                           ],
-                          stops: const [0.0, 1.0],
                         ),
                       ),
                     ),
                   ),
                 ),
-
-                // Nombre siempre visible abajo
                 Positioned(
                   bottom: 0,
                   left: 0,
@@ -476,8 +487,7 @@ class _CharacterCardState extends State<_CharacterCard> {
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
                             shadows: [
-                              Shadow(
-                                  blurRadius: 8, color: Colors.black)
+                              Shadow(blurRadius: 8, color: Colors.black)
                             ],
                           ),
                         ),
@@ -493,13 +503,11 @@ class _CharacterCardState extends State<_CharacterCard> {
                               color: Colors.white.withOpacity(0.6),
                               fontSize: 10,
                               shadows: const [
-                                Shadow(
-                                    blurRadius: 6, color: Colors.black)
+                                Shadow(blurRadius: 6, color: Colors.black)
                               ],
                             ),
                           ),
                         ],
-                        // Ver más en hover
                         AnimatedOpacity(
                           opacity: _hovered ? 1.0 : 0.0,
                           duration: const Duration(milliseconds: 200),
@@ -572,7 +580,6 @@ class _NoImagePlaceholder extends StatelessWidget {
 // ── Detail Dialog ──────────────────────────────────────────────────────────────
 class _CharacterDetailDialog extends StatelessWidget {
   final DisneyCharacter character;
-
   const _CharacterDetailDialog({required this.character});
 
   @override
@@ -582,8 +589,7 @@ class _CharacterDetailDialog extends StatelessWidget {
       insetPadding:
           const EdgeInsets.symmetric(horizontal: 60, vertical: 40),
       child: Container(
-        constraints:
-            const BoxConstraints(maxWidth: 800, maxHeight: 560),
+        constraints: const BoxConstraints(maxWidth: 800, maxHeight: 560),
         decoration: BoxDecoration(
           color: const Color(0xFF12122A),
           borderRadius: BorderRadius.circular(16),
@@ -591,31 +597,25 @@ class _CharacterDetailDialog extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // ── Foto ────────────────────────────────────────────────────
             ClipRRect(
-              borderRadius: const BorderRadius.horizontal(
-                  left: Radius.circular(16)),
+              borderRadius:
+                  const BorderRadius.horizontal(left: Radius.circular(16)),
               child: SizedBox(
                 width: 260,
                 child: character.imageUrl.isNotEmpty
-                    ? Image.network(
-                        character.imageUrl,
+                    ? Image.network(character.imageUrl,
                         fit: BoxFit.cover,
                         errorBuilder: (_, __, ___) =>
-                            _NoImagePlaceholder(name: character.name),
-                      )
+                            _NoImagePlaceholder(name: character.name))
                     : _NoImagePlaceholder(name: character.name),
               ),
             ),
-
-            // ── Info ─────────────────────────────────────────────────────
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(28),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Close
                     Align(
                       alignment: Alignment.topRight,
                       child: GestureDetector(
@@ -627,14 +627,11 @@ class _CharacterDetailDialog extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           child: Icon(Icons.close,
-                              color: Colors.white.withOpacity(0.6),
-                              size: 16),
+                              color: Colors.white.withOpacity(0.6), size: 16),
                         ),
                       ),
                     ),
                     const SizedBox(height: 4),
-
-                    // Nombre
                     Text(
                       character.name,
                       style: const TextStyle(
@@ -645,11 +642,8 @@ class _CharacterDetailDialog extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-
                     Divider(color: Colors.white.withOpacity(0.08)),
                     const SizedBox(height: 12),
-
-                    // Info en scroll
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(
@@ -659,11 +653,9 @@ class _CharacterDetailDialog extends StatelessWidget {
                               _SectionTitle('🎬 Películas'),
                               const SizedBox(height: 8),
                               Wrap(
-                                spacing: 6,
-                                runSpacing: 6,
+                                spacing: 6, runSpacing: 6,
                                 children: character.films
-                                    .map((f) => _Tag(
-                                        f, const Color(0xFF1E90FF)))
+                                    .map((f) => _Tag(f, const Color(0xFF1E90FF)))
                                     .toList(),
                               ),
                               const SizedBox(height: 16),
@@ -672,11 +664,9 @@ class _CharacterDetailDialog extends StatelessWidget {
                               _SectionTitle('📺 Series de TV'),
                               const SizedBox(height: 8),
                               Wrap(
-                                spacing: 6,
-                                runSpacing: 6,
+                                spacing: 6, runSpacing: 6,
                                 children: character.tvShows
-                                    .map((s) => _Tag(
-                                        s, const Color(0xFF6C63FF)))
+                                    .map((s) => _Tag(s, const Color(0xFF6C63FF)))
                                     .toList(),
                               ),
                               const SizedBox(height: 16),
@@ -685,11 +675,9 @@ class _CharacterDetailDialog extends StatelessWidget {
                               _SectionTitle('🤝 Aliados'),
                               const SizedBox(height: 8),
                               Wrap(
-                                spacing: 6,
-                                runSpacing: 6,
+                                spacing: 6, runSpacing: 6,
                                 children: character.allies
-                                    .map((a) => _Tag(
-                                        a, const Color(0xFF00C896)))
+                                    .map((a) => _Tag(a, const Color(0xFF00C896)))
                                     .toList(),
                               ),
                               const SizedBox(height: 16),
@@ -698,11 +686,9 @@ class _CharacterDetailDialog extends StatelessWidget {
                               _SectionTitle('⚔️ Enemigos'),
                               const SizedBox(height: 8),
                               Wrap(
-                                spacing: 6,
-                                runSpacing: 6,
+                                spacing: 6, runSpacing: 6,
                                 children: character.enemies
-                                    .map((e) => _Tag(
-                                        e, const Color(0xFFFF6B6B)))
+                                    .map((e) => _Tag(e, const Color(0xFFFF6B6B)))
                                     .toList(),
                               ),
                               const SizedBox(height: 16),
